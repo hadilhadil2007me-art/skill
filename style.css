@@ -821,7 +821,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 @media (max-width: 768px) {
   .section { padding: 72px 0; }
   .hero-container { grid-template-columns: 1fr; padding-top: 100px; text-align: center; }
-  .hero-image { display: block; }
+  .hero-image { display: none; }
   .hero-actions { justify-content: center; }
   .hero-stats { justify-content: center; }
   .nav-links, .nav-actions { display: none; }
