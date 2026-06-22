@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="إنشاء حساب جديد في منصة مهنتي للتدريب المهني الجزائري" />
+  <title>إنشاء حساب – مهنتي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="pages.css" />
+</head>
+<body>
+  <div class="auth-page">
+    <!-- VISUAL SIDE -->
+    <div class="auth-visual">
+      <div class="auth-visual-content">
+        <a href="index.html" class="nav-logo" style="color:var(--white);margin-bottom:40px;justify-content:center;">
+          <span class="logo-icon">🎓</span>
+          <span class="logo-text">مهنتي</span>
+        </a>
+        <h2>ابدأ رحلتك المهنية!</h2>
+        <p>انضم لأكبر مجتمع للتدريب المهني في الجزائر وابنِ مستقبلك اليوم.</p>
+        <div class="auth-features">
+          <div class="auth-feature">
+            <span class="auth-feature-icon">🚀</span>
+            <span>ابدأ في دقيقتين فقط</span>
+          </div>
+          <div class="auth-feature">
+            <span class="auth-feature-icon">🆓</span>
+            <span>التسجيل مجاني بالكامل</span>
+          </div>
+          <div class="auth-feature">
+            <span class="auth-feature-icon">📍</span>
+            <span>تغطية 48 ولاية جزائرية</span>
+          </div>
+          <div class="auth-feature">
+            <span class="auth-feature-icon">🏅</span>
+            <span>شهادات رقمية معتمدة</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM SIDE -->
+    <div class="auth-form-side">
+      <div class="auth-header">
+        <a href="index.html" class="nav-logo" style="color:var(--navy)">
+          <span class="logo-icon">🎓</span>
+          <span class="logo-text">مهنتي</span>
+        </a>
+        <h1>إنشاء حساب جديد</h1>
+        <p>اختر نوع حسابك للبدء</p>
+      </div>
+
+      <div class="type-selector" id="type-selector">
+        <button class="type-btn active" data-type="trainee" id="type-trainee" onclick="selectType('trainee')">
+          <div class="type-btn-icon">🎓</div>
+          <div class="type-btn-label">أنا متدرب</div>
+          <small style="font-size:0.75rem;color:var(--gray-400)">أبحث عن تدريب</small>
+        </button>
+        <button class="type-btn" data-type="craftsman" id="type-craftsman" onclick="selectType('craftsman')">
+          <div class="type-btn-icon">🔧</div>
+          <div class="type-btn-label">أنا حرفي</div>
+          <small style="font-size:0.75rem;color:var(--gray-400)">أقبل متدربين</small>
+        </button>
+      </div>
+
+      <form id="register-form" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="reg-fname">الاسم</label>
+            <input type="text" class="form-input" id="reg-fname" placeholder="الاسم الأول" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-lname">اللقب</label>
+            <input type="text" class="form-input" id="reg-lname" placeholder="اللقب العائلي" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-phone">رقم الهاتف</label>
+          <input type="tel" class="form-input" id="reg-phone" placeholder="05 XX XX XX XX" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-email">البريد الإلكتروني</label>
+          <input type="email" class="form-input" id="reg-email" placeholder="example@email.com" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="reg-wilaya">الولاية</label>
+            <select class="form-select" id="reg-wilaya" required>
+              <option value="">اختر الولاية</option>
+              <option>الجزائر العاصمة</option><option>وهران</option><option>قسنطينة</option>
+              <option>البليدة</option><option>بجاية</option><option>عنابة</option>
+              <option>سطيف</option><option>مسيلة</option><option>تيزي وزو</option>
+              <option>باتنة</option><option>سكيكدة</option><option>جيجل</option>
+            </select>
+          </div>
+          <div class="form-group" id="profession-group">
+            <label class="form-label" for="reg-profession">المهنة / المجال</label>
+            <select class="form-select" id="reg-profession">
+              <option value="">اختر المهنة</option>
+              <option>الكهرباء</option><option>النجارة</option><option>الميكانيك</option>
+              <option>التبريد والتكييف</option><option>الخياطة</option>
+              <option>الطبخ والحلويات</option><option>التصميم الجرافيكي</option>
+              <option>البرمجة</option><option>أخرى</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-password">كلمة المرور</label>
+          <input type="password" class="form-input" id="reg-password" placeholder="8 أحرف على الأقل" required />
+        </div>
+        <div id="register-error" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:var(--radius-md);padding:12px 16px;font-size:0.85rem;color:#dc2626;margin-bottom:16px;"></div>
+        <button type="submit" class="btn btn-primary form-submit" id="btn-register-submit">إنشاء الحساب مجاناً</button>
+        <p class="form-footer">لديك حساب بالفعل؟ <a href="login.html">تسجيل الدخول</a></p>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Pre-select type from URL param
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('type') === 'craftsman') selectType('craftsman');
+    function selectType(type) {
+      document.querySelectorAll('.type-btn').forEach(b => b.classList.toggle('active', b.dataset.type === type));
+    }
+    document.getElementById('register-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const fname = document.getElementById('reg-fname').value.trim();
+      const lname = document.getElementById('reg-lname').value.trim();
+      const phone = document.getElementById('reg-phone').value.trim();
+      const wilaya = document.getElementById('reg-wilaya').value;
+      const pass = document.getElementById('reg-password').value.trim();
+      const errEl = document.getElementById('register-error');
+      if (!fname || !lname || !phone || !wilaya || !pass) {
+        errEl.textContent = 'يرجى ملء جميع الحقول الإلزامية.';
+        errEl.style.display = 'block'; return;
+      }
+      if (pass.length < 8) {
+        errEl.textContent = 'يجب أن تكون كلمة المرور 8 أحرف على الأقل.';
+        errEl.style.display = 'block'; return;
+      }
+      errEl.style.display = 'none';
+      const btn = document.getElementById('btn-register-submit');
+      btn.textContent = '⏳ جارٍ الإنشاء...';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.textContent = '✅ تم الإنشاء بنجاح!';
+        btn.style.background = 'var(--success)';
+        setTimeout(() => { window.location.href = 'dashboard.html'; }, 1200);
+      }, 1800);
+    });
+  </script>
+</body>
+</html>
