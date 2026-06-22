@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة التحكم – مهنتي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .dashboard { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+    .sidebar {
+      background: var(--navy);
+      padding: 32px 0;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: 260px;
+      overflow-y: auto;
+      z-index: 100;
+    }
+    .sidebar-logo { padding: 0 24px 32px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 24px; }
+    .sidebar-logo .nav-logo { color: var(--white); }
+    .sidebar-nav { flex: 1; padding: 0 12px; }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      color: rgba(255,255,255,0.6);
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: var(--transition);
+      cursor: pointer;
+      margin-bottom: 4px;
+    }
+    .sidebar-item:hover, .sidebar-item.active {
+      background: rgba(249,115,22,0.15);
+      color: #fed7aa;
+    }
+    .sidebar-item.active { color: var(--white); }
+    .sidebar-item-icon { font-size: 1.1rem; width: 20px; text-align: center; }
+    .sidebar-footer { padding: 24px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .user-card {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .user-avatar {
+      width: 44px; height: 44px;
+      background: var(--gradient-primary);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white); font-weight: 700; font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .user-name { font-size: 0.875rem; font-weight: 700; color: var(--white); }
+    .user-role { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
+
+    .main-content {
+      margin-right: 260px;
+      background: var(--gray-50);
+      min-height: 100vh;
+    }
+    .topbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-100);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky; top: 0; z-index: 50;
+    }
+    .topbar h1 { font-size: 1.25rem; font-weight: 800; color: var(--navy); }
+    .topbar-actions { display: flex; align-items: center; gap: 12px; }
+    .notif-btn {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--gray-100);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; cursor: pointer; transition: var(--transition);
+      position: relative;
+    }
+    .notif-btn:hover { background: rgba(249,115,22,0.1); }
+    .notif-badge {
+      position: absolute; top: 4px; right: 4px;
+      width: 8px; height: 8px;
+      background: var(--danger);
+      border-radius: 50%;
+      border: 2px solid var(--white);
+    }
+
+    .dashboard-body { padding: 32px; }
+    .welcome-banner {
+      background: var(--gradient-primary);
+      border-radius: var(--radius-xl);
+      padding: 32px 40px;
+      color: var(--white);
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .welcome-banner::before {
+      content: '';
+      position: absolute; top: -60px; left: -60px;
+      width: 200px; height: 200px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+    }
+    .welcome-banner h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 6px; }
+    .welcome-banner p { font-size: 0.9rem; opacity: 0.85; }
+    .welcome-banner .btn { margin-top: 20px; }
+
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 32px; }
+    .stat-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      border: 1px solid var(--gray-100);
+      display: flex; align-items: center; gap: 16px;
+      transition: var(--transition);
+    }
+    .stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .stat-card-icon {
+      width: 52px; height: 52px;
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .stat-card-num { font-size: 1.75rem; font-weight: 900; color: var(--navy); line-height: 1; }
+    .stat-card-label { font-size: 0.8rem; color: var(--gray-500); margin-top: 4px; }
+    .stat-card-change { font-size: 0.75rem; font-weight: 600; margin-top: 4px; }
+    .change-up { color: var(--success); }
+    .change-down { color: var(--danger); }
+
+    .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+    .card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      border: 1px solid var(--gray-100);
+    }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .card-header h3 { font-size: 1rem; font-weight: 700; color: var(--navy); }
+    .card-header a { font-size: 0.8rem; color: var(--primary); font-weight: 600; }
+
+    .training-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .training-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .training-icon {
+      width: 44px; height: 44px;
+      border-radius: var(--radius-md);
+      background: rgba(249,115,22,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+    }
+    .training-info { flex: 1; }
+    .training-info h4 { font-size: 0.875rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .training-info p { font-size: 0.78rem; color: var(--gray-500); }
+    .progress-wrap { margin-top: 8px; }
+    .progress-bar-bg {
+      width: 100%; height: 6px;
+      background: var(--gray-100);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--gradient-primary);
+      border-radius: 3px;
+      transition: width 1s ease;
+    }
+    .progress-label { font-size: 0.7rem; color: var(--gray-400); margin-top: 4px; text-align: left; }
+
+    .activity-item {
+      display: flex; gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+    .activity-item p { font-size: 0.82rem; color: var(--gray-600); line-height: 1.5; }
+    .activity-item span { font-size: 0.72rem; color: var(--gray-400); }
+
+    .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+    .quick-btn {
+      padding: 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: var(--font-primary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      background: var(--white);
+    }
+    .quick-btn:hover { border-color: var(--primary); color: var(--primary); background: rgba(249,115,22,0.04); }
+    .quick-btn-icon { font-size: 1.2rem; display: block; margin-bottom: 6px; }
+
+    @media (max-width: 1024px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .content-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .dashboard { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .main-content { margin-right: 0; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .dashboard-body { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <a href="index.html" class="nav-logo"><span class="logo-icon">🎓</span><span class="logo-text">مهنتي</span></a>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-item active" id="nav-overview"><span class="sidebar-item-icon">📊</span> لوحة التحكم</div>
+        <a href="opportunities.html"><div class="sidebar-item" id="nav-opps"><span class="sidebar-item-icon">🔎</span> الفرص المتاحة</div></a>
+        <div class="sidebar-item" id="nav-training"><span class="sidebar-item-icon">📚</span> تدريباتي</div>
+        <div class="sidebar-item" id="nav-messages"><span class="sidebar-item-icon">💬</span> الرسائل <span style="background:var(--primary);color:white;font-size:0.7rem;padding:2px 8px;border-radius:99px;margin-right:auto;">3</span></div>
+        <div class="sidebar-item" id="nav-certs"><span class="sidebar-item-icon">🏅</span> شهاداتي</div>
+        <div class="sidebar-item" id="nav-map"><span class="sidebar-item-icon">🗺️</span> الخريطة التفاعلية</div>
+        <div class="sidebar-item" id="nav-profile"><span class="sidebar-item-icon">👤</span> الملف الشخصي</div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-avatar">ي.م</div>
+          <div>
+            <div class="user-name">يوسف مراد</div>
+            <div class="user-role">متدرب – الجزائر العاصمة</div>
+          </div>
+        </div>
+        <a href="index.html" style="display:block;margin-top:16px;text-align:center;font-size:0.8rem;color:rgba(255,255,255,0.4);">تسجيل الخروج</a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <div class="topbar">
+        <h1>لوحة التحكم</h1>
+        <div class="topbar-actions">
+          <div class="notif-btn" id="notif-btn">🔔<span class="notif-badge"></span></div>
+          <div class="user-avatar" style="width:40px;height:40px;font-size:0.8rem;cursor:pointer;">ي.م</div>
+        </div>
+      </div>
+
+      <div class="dashboard-body">
+        <!-- WELCOME -->
+        <div class="welcome-banner">
+          <div style="position:relative;z-index:1;">
+            <h2>مرحباً بك يوسف! 👋</h2>
+            <p>لديك تدريب نشط في الكهرباء الصناعية. واصل التقدم!</p>
+            <a href="opportunities.html" class="btn btn-white btn-lg" id="dash-find-more" style="display:inline-flex;margin-top:16px;">ابحث عن تدريب جديد ←</a>
+          </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:rgba(249,115,22,0.1);">📚</div>
+            <div>
+              <div class="stat-card-num">2</div>
+              <div class="stat-card-label">تدريبات مكتملة</div>
+              <div class="stat-card-change change-up">↑ هذه السنة</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:rgba(99,102,241,0.1);">⏱</div>
+            <div>
+              <div class="stat-card-num">148</div>
+              <div class="stat-card-label">ساعة تدريب</div>
+              <div class="stat-card-change change-up">↑ 12 ساعة هذا الأسبوع</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:rgba(34,197,94,0.1);">🏅</div>
+            <div>
+              <div class="stat-card-num">3</div>
+              <div class="stat-card-label">شهادات رقمية</div>
+              <div class="stat-card-change change-up">معتمدة</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:rgba(245,158,11,0.1);">⭐</div>
+            <div>
+              <div class="stat-card-num">4.8</div>
+              <div class="stat-card-label">تقييمي الإجمالي</div>
+              <div class="stat-card-change change-up">ممتاز</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTENT GRID -->
+        <div class="content-grid">
+          <!-- ACTIVE TRAININGS -->
+          <div class="card" id="active-trainings-card">
+            <div class="card-header">
+              <h3>تدريباتي النشطة</h3>
+              <a href="#">عرض الكل</a>
+            </div>
+            <div class="training-item">
+              <div class="training-icon">⚡</div>
+              <div class="training-info">
+                <h4>الكهرباء الصناعية والمنزلية</h4>
+                <p>👤 الأستاذ كريم بلحاج &nbsp;•&nbsp; 📍 الجزائر العاصمة</p>
+                <div class="progress-wrap">
+                  <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:65%"></div></div>
+                  <div class="progress-label">65% مكتمل – أسبوعان متبقيان</div>
+                </div>
+              </div>
+            </div>
+            <div class="training-item">
+              <div class="training-icon">💻</div>
+              <div class="training-info">
+                <h4>تطوير الويب – المستوى المتقدم</h4>
+                <p>👤 مختبر الكود &nbsp;•&nbsp; 📍 الجزائر العاصمة</p>
+                <div class="progress-wrap">
+                  <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:30%"></div></div>
+                  <div class="progress-label">30% مكتمل – شهران متبقيان</div>
+                </div>
+              </div>
+            </div>
+            <div style="text-align:center;margin-top:20px;">
+              <a href="opportunities.html" class="btn btn-primary" id="dash-explore" style="font-size:0.875rem;">استكشف فرص جديدة</a>
+            </div>
+          </div>
+
+          <!-- SIDEBAR WIDGETS -->
+          <div style="display:flex;flex-direction:column;gap:24px;">
+            <!-- Quick Actions -->
+            <div class="card" id="quick-actions-card">
+              <div class="card-header"><h3>إجراءات سريعة</h3></div>
+              <div class="quick-actions">
+                <button class="quick-btn" id="qa-find" onclick="window.location.href='opportunities.html'"><span class="quick-btn-icon">🔎</span>ابحث عن تدريب</button>
+                <button class="quick-btn" id="qa-messages"><span class="quick-btn-icon">💬</span>الرسائل</button>
+                <button class="quick-btn" id="qa-certs"><span class="quick-btn-icon">🏅</span>شهاداتي</button>
+                <button class="quick-btn" id="qa-profile"><span class="quick-btn-icon">👤</span>ملفي</button>
+              </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card" id="recent-activity-card">
+              <div class="card-header"><h3>النشاط الأخير</h3></div>
+              <div class="activity-item">
+                <div class="activity-dot" style="background:var(--success)"></div>
+                <div>
+                  <p>حصلت على شهادة <strong>الكهرباء الأساسية</strong></p>
+                  <span>منذ 3 أيام</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot"></div>
+                <div>
+                  <p>بدأت التدريب على <strong>تطوير الويب</strong></p>
+                  <span>منذ أسبوع</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot" style="background:var(--warning)"></div>
+                <div>
+                  <p>تقييم جديد من <strong>الأستاذ كريم</strong> – ⭐ 4.9</p>
+                  <span>منذ أسبوعين</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot" style="background:var(--accent)"></div>
+                <div>
+                  <p>رسالة جديدة من <strong>مختبر الكود</strong></p>
+                  <span>منذ 3 أسابيع</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Animate progress bars on load
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.progress-bar-fill').forEach(bar => {
+        const w = bar.style.width;
+        bar.style.width = '0';
+        setTimeout(() => { bar.style.width = w; }, 300);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="تصفح فرص التدريب المهني المتاحة في جميع ولايات الجزائر – SkillUp" />
+  <title>فرص التدريب – SkillUp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="pages.css" />
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo" style="color:var(--navy)">
+        <svg width="34" height="34" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100" height="100" rx="18" fill="#0d1b3e"/>
+          <polygon points="50,18 72,40 50,62 28,40" fill="url(#dg-opp)"/>
+          <polyline points="22,52 38,68 50,56 62,68 78,52" stroke="white" stroke-width="9" stroke-linejoin="round" fill="none"/>
+          <defs><linearGradient id="dg-opp" x1="28" y1="18" x2="72" y2="62" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#c084fc"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient></defs>
+        </svg>
+        <span class="logo-text">SkillUp</span>
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html#features">المميزات</a></li>
+        <li><a href="index.html#professions">المهن</a></li>
+        <li><a href="opportunities.html" style="color:var(--primary)">الفرص</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-ghost" id="btn-login">تسجيل الدخول</a>
+        <a href="register.html" class="btn btn-primary" id="btn-register">انضم الآن</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="قائمة"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="container">
+      <div class="page-hero-content">
+        <span class="section-tag">الفرص المتاحة</span>
+        <h1>ابحث عن تدريبك المثالي</h1>
+        <p>آلاف فرص التدريب في المهن العملية عبر جميع ولايات الجزائر</p>
+        <div class="search-bar-wrapper">
+          <input type="text" class="search-input" placeholder="ابحث عن مهنة أو ورشة..." id="search-input" />
+          <select class="search-select" id="search-wilaya">
+            <option value="">الولاية</option>
+            <option value="16">الجزائر العاصمة</option>
+            <option value="31">وهران</option>
+            <option value="25">قسنطينة</option>
+            <option value="09">البليدة</option>
+            <option value="06">بجاية</option>
+            <option value="23">عنابة</option>
+            <option value="19">سطيف</option>
+            <option value="29">مسيلة</option>
+          </select>
+          <select class="search-select" id="search-profession">
+            <option value="">المهنة</option>
+            <option value="electricity">الكهرباء</option>
+            <option value="carpentry">النجارة</option>
+            <option value="mechanics">الميكانيك</option>
+            <option value="cooling">التبريد والتكييف</option>
+            <option value="sewing">الخياطة</option>
+            <option value="cooking">الطبخ والحلويات</option>
+            <option value="design">التصميم الجرافيكي</option>
+            <option value="programming">البرمجة</option>
+          </select>
+          <button class="btn btn-primary" id="btn-search">بحث</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPPORTUNITIES -->
+  <div class="container">
+    <div class="opportunities-layout" id="opportunities-section">
+      <aside class="filter-sidebar" id="filter-sidebar">
+        <div class="filter-card">
+          <h3>المهنة</h3>
+          <div class="filter-options" id="filter-profession">
+            <label class="filter-option active"><input type="checkbox" class="filter-checkbox" checked /> الكل</label>
+            <label class="filter-option"><input type="checkbox" class="filter-checkbox" /> ⚡ الكهرباء</label>
+            <label class="filter-option"><input type="checkbox" class="filter-checkbox" /> 🪚 النجارة</label>
+            <label class="filter-option"><input type="checkbox" class="filter-checkbox" /> 🔧 الميكانيك</label>
+            <label class="filter-option"><input type="checkbox" class="filter-checkbox" /> ❄️ التبريد والتكييف</label>
+            <label class="filter-option"><input type="checkbox" class="filter-checkbox" /> 🧵 الخياطة</label>
+            <label class="filter-option"><input type="checkbox" class="filter-checkbox" /> 🍳 الطبخ والحلويات</label>
+            <label class="filter-option"><input type="checkbox" class="filter-checkbox" /> 🎨 التصميم الجرافيكي</label>
+            <label class="filter-option"><input type="checkbox" class="filter-checkbox" /> 💻 البرمجة</label>
+          </div>
+          <h3>المدة</h3>
+          <div class="filter-options">
+            <label class="filter-option active"><input type="radio" name="duration" class="filter-checkbox" checked /> الكل</label>
+            <label class="filter-option"><input type="radio" name="duration" class="filter-checkbox" /> أقل من شهر</label>
+            <label class="filter-option"><input type="radio" name="duration" class="filter-checkbox" /> 1–3 أشهر</label>
+            <label class="filter-option"><input type="radio" name="duration" class="filter-checkbox" /> أكثر من 3 أشهر</label>
+          </div>
+          <h3>التقييم</h3>
+          <div class="filter-options">
+            <label class="filter-option"><input type="radio" name="rating" class="filter-checkbox" checked /> الكل</label>
+            <label class="filter-option"><input type="radio" name="rating" class="filter-checkbox" /> ⭐⭐⭐⭐⭐ 5 نجوم</label>
+            <label class="filter-option"><input type="radio" name="rating" class="filter-checkbox" /> ⭐⭐⭐⭐ 4+ نجوم</label>
+          </div>
+        </div>
+      </aside>
+      <main class="opportunities-grid" id="opp-grid"></main>
+    </div>
+  </div>
+
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2025 SkillUp – جميع الحقوق محفوظة | تعلم مهنة اليوم وابنِ مستقبلك غداً</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script src="opportunities.js"></script>
+</body>
+</html>

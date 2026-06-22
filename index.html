@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SkillUp – أول منصة جزائرية تربط الشباب بالحرفيين وأصحاب المهن لاكتساب خبرة عملية حقيقية والاندماج في سوق العمل." />
+  <meta property="og:title" content="SkillUp – تعلم مهنة اليوم وابنِ مستقبلك غداً" />
+  <meta property="og:description" content="المنصة الجزائرية الأولى للتدريب المهني الميداني" />
+  <title>SkillUp – التدريب المهني الجزائري</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100" height="100" rx="18" fill="#0d1b3e"/>
+          <polygon points="50,18 72,40 50,62 28,40" fill="url(#dg)"/>
+          <polyline points="22,52 38,68 50,56 62,68 78,52" stroke="white" stroke-width="9" stroke-linejoin="round" fill="none"/>
+          <defs>
+            <linearGradient id="dg" x1="28" y1="18" x2="72" y2="62" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#c084fc"/>
+              <stop offset="100%" stop-color="#7c3aed"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="logo-text">SkillUp</span>
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#features">المميزات</a></li>
+        <li><a href="#how-it-works">كيف تعمل</a></li>
+        <li><a href="#professions">المهن</a></li>
+        <li><a href="#impact">الأثر</a></li>
+        <li><a href="opportunities.html">الفرص</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-ghost" id="btn-login">تسجيل الدخول</a>
+        <a href="register.html" class="btn btn-primary" id="btn-register">انضم الآن</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="قائمة">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          أول منصة جزائرية للتدريب الميداني
+        </div>
+        <h1 class="hero-title">
+          تعلّم مهنة <span class="gradient-text">اليوم</span><br />
+          وابنِ مستقبلك <span class="gradient-text">غداً</span>
+        </h1>
+        <p class="hero-subtitle">
+          منصة <strong>SkillUp</strong> تربطك بأفضل الحرفيين وأصحاب المهن في الجزائر لاكتساب خبرة عملية حقيقية وتطوير مهاراتك المهنية.
+        </p>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-num" data-target="500">0</span><span>+</span>
+            <span class="stat-label">حرفي مسجّل</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num" data-target="1200">0</span><span>+</span>
+            <span class="stat-label">متدرب</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num" data-target="48">0</span><span></span>
+            <span class="stat-label">ولاية</span>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <a href="register.html?type=trainee" class="btn btn-primary btn-lg" id="hero-cta-trainee">
+            ابحث عن تدريب
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="register.html?type=craftsman" class="btn btn-secondary btn-lg" id="hero-cta-craftsman">
+            انشر فرصة تدريب
+          </a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="hero-img-wrapper">
+          <img src="assets/hero_illustration.png" alt="شباب يتعلمون المهن" class="hero-illustration" />
+          <div class="floating-card card-1">
+            <span class="card-icon">⭐</span>
+            <div>
+              <strong>تقييم ممتاز</strong>
+              <small>4.9 / 5.0</small>
+            </div>
+          </div>
+          <div class="floating-card card-2">
+            <span class="card-icon">🏆</span>
+            <div>
+              <strong>شهادة رقمية</strong>
+              <small>معتمدة</small>
+            </div>
+          </div>
+          <div class="floating-card card-3">
+            <span class="card-icon">📍</span>
+            <div>
+              <strong>48 ولاية</strong>
+              <small>تغطية كاملة</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-wave">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#f8fafc"/></svg>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES ===== -->
+  <section class="features section" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">المميزات</span>
+        <h2 class="section-title">كل ما تحتاجه في مكان واحد</h2>
+        <p class="section-subtitle">منصة متكاملة توفر لك جميع الأدوات لبدء مسيرتك المهنية</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card" data-delay="0">
+          <div class="feature-icon" style="--icon-color: #a855f7;">🔍</div>
+          <h3>بحث ذكي بالموقع</h3>
+          <p>ابحث عن فرص التدريب حسب الولاية والبلدية للعثور على الفرص القريبة منك.</p>
+        </div>
+        <div class="feature-card" data-delay="100">
+          <div class="feature-icon" style="--icon-color: #10b981;">⭐</div>
+          <h3>نظام التقييم</h3>
+          <p>تقييم متبادل بين المتدربين وأصحاب المهن لضمان أفضل تجربة تدريبية.</p>
+        </div>
+        <div class="feature-card" data-delay="200">
+          <div class="feature-icon" style="--icon-color: #6366f1;">🏅</div>
+          <h3>شهادة رقمية</h3>
+          <p>احصل على شهادة رقمية معتمدة عند إتمام التدريب تعزز ملفك المهني.</p>
+        </div>
+        <div class="feature-card" data-delay="300">
+          <div class="feature-icon" style="--icon-color: #ec4899;">💬</div>
+          <h3>مراسلة داخلية</h3>
+          <p>تواصل مباشرة مع أصحاب المهن والمتدربين عبر نظام المراسلة الآمن.</p>
+        </div>
+        <div class="feature-card" data-delay="400">
+          <div class="feature-icon" style="--icon-color: #c084fc;">🗺️</div>
+          <h3>خريطة تفاعلية</h3>
+          <p>اكتشف الفرص القريبة منك على خريطة تفاعلية شاملة لكامل الجزائر.</p>
+        </div>
+        <div class="feature-card" data-delay="500">
+          <div class="feature-icon" style="--icon-color: #7c3aed;">🔔</div>
+          <h3>إشعارات فورية</h3>
+          <p>تلقَّ إشعارات لحظية عند نشر فرص تدريب جديدة في مجالك ومنطقتك.</p>
+        </div>
+        <div class="feature-card" data-delay="600">
+          <div class="feature-icon" style="--icon-color: #8b5cf6;">📊</div>
+          <h3>لوحة المتابعة</h3>
+          <p>تابع ساعات تدريبك وتقدمك المحقق عبر لوحة تحكم شخصية متكاملة.</p>
+        </div>
+        <div class="feature-card" data-delay="700">
+          <div class="feature-icon" style="--icon-color: #4f46e5;">🤝</div>
+          <h3>مجتمع المهنيين</h3>
+          <p>انضم لمجتمع نشط من الشباب والحرفيين الجزائريين وتبادل الخبرات.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="how-it-works section" id="how-it-works">
+    <div class="how-bg"></div>
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">طريقة العمل</span>
+        <h2 class="section-title">كيف تعمل المنصة؟</h2>
+        <p class="section-subtitle">خطوات بسيطة تفصلك عن بدء مسيرتك المهنية</p>
+      </div>
+      <div class="tabs-wrapper">
+        <div class="tabs">
+          <button class="tab active" data-tab="trainee" id="tab-trainee">أنا متدرب</button>
+          <button class="tab" data-tab="craftsman" id="tab-craftsman">أنا صاحب مهنة</button>
+        </div>
+        <div class="steps-content" id="steps-trainee">
+          <div class="steps-grid">
+            <div class="step">
+              <div class="step-number">01</div>
+              <div class="step-icon">📝</div>
+              <h3>أنشئ حسابك</h3>
+              <p>سجّل بياناتك الشخصية واختر المهنة التي تريد تعلّمها وولايتك.</p>
+            </div>
+            <div class="step-arrow">◄</div>
+            <div class="step">
+              <div class="step-number">02</div>
+              <div class="step-icon">🔎</div>
+              <h3>ابحث عن فرصة</h3>
+              <p>استخدم الفلاتر للعثور على فرص تدريب قريبة منك في مجالك المختار.</p>
+            </div>
+            <div class="step-arrow">◄</div>
+            <div class="step">
+              <div class="step-number">03</div>
+              <div class="step-icon">✅</div>
+              <h3>قدّم طلبك</h3>
+              <p>أرسل طلب التدريب مع رسالة تعريفية وانتظر الرد من صاحب المهنة.</p>
+            </div>
+            <div class="step-arrow">◄</div>
+            <div class="step">
+              <div class="step-number">04</div>
+              <div class="step-icon">🏅</div>
+              <h3>ابدأ واحصل على شهادتك</h3>
+              <p>أتمم فترة التدريب واحصل على شهادتك الرقمية المعتمدة.</p>
+            </div>
+          </div>
+        </div>
+        <div class="steps-content hidden" id="steps-craftsman">
+          <div class="steps-grid">
+            <div class="step">
+              <div class="step-number">01</div>
+              <div class="step-icon">🧑‍🔧</div>
+              <h3>سجّل ورشتك</h3>
+              <p>أنشئ ملف احترافي لورشتك أو محلك مع صورة وبيانات التواصل.</p>
+            </div>
+            <div class="step-arrow">◄</div>
+            <div class="step">
+              <div class="step-number">02</div>
+              <div class="step-icon">📢</div>
+              <h3>انشر فرصة تدريب</h3>
+              <p>حدد المهارات المطلوبة ومدة التدريب وعدد المتدربين المقبولين.</p>
+            </div>
+            <div class="step-arrow">◄</div>
+            <div class="step">
+              <div class="step-number">03</div>
+              <div class="step-icon">👥</div>
+              <h3>اختر المتدربين</h3>
+              <p>راجع الطلبات الواردة واختر المتدربين الأنسب لورشتك.</p>
+            </div>
+            <div class="step-arrow">◄</div>
+            <div class="step">
+              <div class="step-number">04</div>
+              <div class="step-icon">⭐</div>
+              <h3>درّب وقيّم</h3>
+              <p>أشرف على التدريب وتابع التقدم وامنح الشهادة عند الإتمام.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROFESSIONS ===== -->
+  <section class="professions section" id="professions">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">المهن</span>
+        <h2 class="section-title">المهن المتاحة</h2>
+        <p class="section-subtitle">تنوع واسع من المهن العملية التي تحتاجها سوق العمل الجزائرية</p>
+      </div>
+      <div class="professions-grid">
+        <a href="opportunities.html?profession=electricity" class="profession-card" id="prof-electricity">
+          <div class="prof-icon">⚡</div>
+          <div class="prof-info"><h3>الكهرباء</h3><span class="prof-count">87 فرصة</span></div>
+          <div class="prof-arrow">←</div>
+        </a>
+        <a href="opportunities.html?profession=carpentry" class="profession-card" id="prof-carpentry">
+          <div class="prof-icon">🪚</div>
+          <div class="prof-info"><h3>النجارة</h3><span class="prof-count">64 فرصة</span></div>
+          <div class="prof-arrow">←</div>
+        </a>
+        <a href="opportunities.html?profession=mechanics" class="profession-card" id="prof-mechanics">
+          <div class="prof-icon">🔧</div>
+          <div class="prof-info"><h3>الميكانيك</h3><span class="prof-count">112 فرصة</span></div>
+          <div class="prof-arrow">←</div>
+        </a>
+        <a href="opportunities.html?profession=cooling" class="profession-card" id="prof-cooling">
+          <div class="prof-icon">❄️</div>
+          <div class="prof-info"><h3>التبريد والتكييف</h3><span class="prof-count">56 فرصة</span></div>
+          <div class="prof-arrow">←</div>
+        </a>
+        <a href="opportunities.html?profession=sewing" class="profession-card" id="prof-sewing">
+          <div class="prof-icon">🧵</div>
+          <div class="prof-info"><h3>الخياطة</h3><span class="prof-count">73 فرصة</span></div>
+          <div class="prof-arrow">←</div>
+        </a>
+        <a href="opportunities.html?profession=cooking" class="profession-card" id="prof-cooking">
+          <div class="prof-icon">🍳</div>
+          <div class="prof-info"><h3>الطبخ والحلويات</h3><span class="prof-count">95 فرصة</span></div>
+          <div class="prof-arrow">←</div>
+        </a>
+        <a href="opportunities.html?profession=design" class="profession-card" id="prof-design">
+          <div class="prof-icon">🎨</div>
+          <div class="prof-info"><h3>التصميم الجرافيكي</h3><span class="prof-count">48 فرصة</span></div>
+          <div class="prof-arrow">←</div>
+        </a>
+        <a href="opportunities.html?profession=programming" class="profession-card" id="prof-programming">
+          <div class="prof-icon">💻</div>
+          <div class="prof-info"><h3>البرمجة</h3><span class="prof-count">61 فرصة</span></div>
+          <div class="prof-arrow">←</div>
+        </a>
+      </div>
+      <div class="section-cta">
+        <a href="opportunities.html" class="btn btn-primary btn-lg" id="btn-all-opportunities">عرض كل الفرص</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== IMPACT ===== -->
+  <section class="impact section" id="impact">
+    <div class="impact-bg"></div>
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag light">الأثر الاجتماعي</span>
+        <h2 class="section-title light">نحن نصنع الفرق</h2>
+        <p class="section-subtitle light">SkillUp أكثر من مجرد منصة – هي حركة تغيير اجتماعي</p>
+      </div>
+      <div class="impact-grid">
+        <div class="impact-card"><div class="impact-icon">📉</div><h3>تقليل البطالة</h3><p>نساهم في تقليص نسبة البطالة بين الشباب من خلال ربطهم بسوق العمل مباشرة.</p></div>
+        <div class="impact-card"><div class="impact-icon">💡</div><h3>تطوير المهارات</h3><p>نبني جيلاً من الشباب الجزائري المزود بمهارات عملية حقيقية يحتاجها السوق.</p></div>
+        <div class="impact-card"><div class="impact-icon">🌉</div><h3>جسر التعلم والعمل</h3><p>نسهّل الانتقال السلس من مرحلة التعلم إلى مرحلة العمل الفعلي.</p></div>
+        <div class="impact-card"><div class="impact-icon">🏺</div><h3>دعم الحرف المحلية</h3><p>نحافظ على الحرف والمهن التقليدية الجزائرية وننقلها للأجيال القادمة.</p></div>
+        <div class="impact-card"><div class="impact-icon">🚀</div><h3>ريادة الأعمال</h3><p>نعزز ثقافة التكوين المهني وريادة الأعمال لدى شباب الجزائر.</p></div>
+        <div class="impact-card"><div class="impact-icon">🤝</div><h3>بناء المجتمع</h3><p>نخلق شبكة من العلاقات المهنية التي تدوم وتفيد الفرد والمجتمع معاً.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIALS ===== -->
+  <section class="testimonials section" id="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">قصص النجاح</span>
+        <h2 class="section-title">ماذا يقول مستخدمونا؟</h2>
+      </div>
+      <div class="testimonials-slider" id="testimonials-slider">
+        <div class="testimonial-card active" id="testimonial-1">
+          <div class="testimonial-quote">❝</div>
+          <p class="testimonial-text">بفضل SkillUp وجدت تدريباً في الكهرباء الصناعية قريباً من بيتي. الأستاذ كان محترفاً والتجربة غيّرت حياتي. الآن فتحت ورشتي الخاصة!</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">ي.م</div>
+            <div class="author-info"><strong>يوسف مراد</strong><span>متدرب – الجزائر العاصمة</span></div>
+            <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+          </div>
+        </div>
+        <div class="testimonial-card" id="testimonial-2">
+          <div class="testimonial-quote">❝</div>
+          <p class="testimonial-text">كحرفية في الخياطة التقليدية، ساعدتني المنصة على إيجاد متدربات جادات. الآن عندي ثلاث مساعدات ماهرات تعلّمن في ورشتي عبر SkillUp.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">ف.ب</div>
+            <div class="author-info"><strong>فاطمة بوزيدي</strong><span>حرفية خياطة – وهران</span></div>
+            <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+          </div>
+        </div>
+        <div class="testimonial-card" id="testimonial-3">
+          <div class="testimonial-quote">❝</div>
+          <p class="testimonial-text">تدربت على الطبخ والحلويات لمدة شهرين وحصلت على شهادة رقمية. الشهادة ساعدتني كثيراً في إيجاد عمل في مطعم محترم بقسنطينة.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">أ.ق</div>
+            <div class="author-info"><strong>أمين قدّور</strong><span>متدرب – قسنطينة</span></div>
+            <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-dots">
+        <span class="dot active" data-slide="0"></span>
+        <span class="dot" data-slide="1"></span>
+        <span class="dot" data-slide="2"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="cta-section section" id="cta">
+    <div class="container">
+      <div class="cta-card">
+        <div class="cta-content">
+          <h2>مستعد لبدء رحلتك المهنية؟</h2>
+          <p>انضم إلى آلاف الشباب الجزائري الذين يبنون مستقبلهم مع SkillUp</p>
+          <div class="cta-actions">
+            <a href="register.html?type=trainee" class="btn btn-white btn-lg" id="cta-trainee">ابدأ كمتدرب</a>
+            <a href="register.html?type=craftsman" class="btn btn-outline-white btn-lg" id="cta-craftsman">انضم كحرفي</a>
+          </div>
+        </div>
+        <div class="cta-decoration">
+          <div class="cta-circle c1"></div>
+          <div class="cta-circle c2"></div>
+          <div class="cta-circle c3"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" style="color:white;margin-bottom:16px;">
+            <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" rx="18" fill="#1a2a5e"/>
+              <polygon points="50,18 72,40 50,62 28,40" fill="url(#dg2)"/>
+              <polyline points="22,52 38,68 50,56 62,68 78,52" stroke="white" stroke-width="9" stroke-linejoin="round" fill="none"/>
+              <defs><linearGradient id="dg2" x1="28" y1="18" x2="72" y2="62" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#c084fc"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient></defs>
+            </svg>
+            <span class="logo-text">SkillUp</span>
+          </a>
+          <p>أول منصة جزائرية للتدريب المهني الميداني. نربط الشباب بالحرفيين لبناء جيل كفء.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" id="social-fb" aria-label="فيسبوك">f</a>
+            <a href="#" class="social-link" id="social-ig" aria-label="إنستغرام">ig</a>
+            <a href="#" class="social-link" id="social-tw" aria-label="تويتر">tw</a>
+            <a href="#" class="social-link" id="social-li" aria-label="لينكدإن">in</a>
+          </div>
+        </div>
+        <div class="footer-links-col">
+          <h4>روابط سريعة</h4>
+          <ul>
+            <li><a href="#features">المميزات</a></li>
+            <li><a href="#how-it-works">كيف تعمل</a></li>
+            <li><a href="#professions">المهن</a></li>
+            <li><a href="opportunities.html">الفرص المتاحة</a></li>
+          </ul>
+        </div>
+        <div class="footer-links-col">
+          <h4>للمستخدمين</h4>
+          <ul>
+            <li><a href="register.html?type=trainee">تسجيل متدرب</a></li>
+            <li><a href="register.html?type=craftsman">تسجيل حرفي</a></li>
+            <li><a href="login.html">تسجيل الدخول</a></li>
+            <li><a href="#">الشهادات الرقمية</a></li>
+          </ul>
+        </div>
+        <div class="footer-links-col">
+          <h4>تواصل معنا</h4>
+          <ul>
+            <li>📧 contact@skillup.dz</li>
+            <li>📞 +213 XX XX XX XX</li>
+            <li>📍 الجزائر العاصمة</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 SkillUp – جميع الحقوق محفوظة | تعلم مهنة اليوم وابنِ مستقبلك غداً</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
