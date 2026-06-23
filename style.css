@@ -225,9 +225,10 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   flex-shrink: 0;
 }
 .logo-img {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   object-fit: contain;
+  border-radius: 18px;
   transition: var(--transition);
 }
 .navbar.scrolled .nav-logo { color: var(--navy); }
