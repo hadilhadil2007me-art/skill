@@ -1,6 +1,65 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>لوحة المستخدم – SkillUp</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="pages.css" />
+</head>
+<body>
+  <nav class="navbar scrolled">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">SkillUp</a>
+      <div class="nav-actions" id="nav-actions"></div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding:24px 16px;">
+    <h1 id="page-title">لوحة التحكم</h1>
+    <section id="user-info" class="card" style="margin-top:16px;padding:16px;"></section>
+
+    <section id="trainer-section" class="card" style="margin-top:16px;padding:16px;display:none;">
+      <h2>ملف المدرب</h2>
+      <div id="trainer-profile"></div>
+      <hr />
+      <h3>إنشاء / تعديل ملف المدرب</h3>
+      <form id="trainer-form">
+        <label>المهارة</label>
+        <select id="skill-select"></select>
+        <label>المدينة</label>
+        <input id="trainer-city" />
+        <label>سنوات الخبرة</label>
+        <input id="trainer-exp" type="number" min="0" />
+        <label>نبذة عنك</label>
+        <textarea id="trainer-bio"></textarea>
+        <button class="btn btn-primary" type="submit">حفظ</button>
+      </form>
+      <hr />
+      <h3>طلبات التدريب الواردة</h3>
+      <div id="requests-list"></div>
+    </section>
+
+    <section id="trainee-section" class="card" style="margin-top:16px;padding:16px;display:none;">
+      <h2>البحث عن مدربين</h2>
+      <div>
+        <input id="search-trainer" placeholder="ابحث باسم المدرب أو الولاية" />
+        <button class="btn" id="btn-search-trainers">بحث</button>
+      </div>
+      <div id="trainers-list" style="margin-top:12px;"></div>
+      <hr />
+      <h3>طلباتي</h3>
+      <div id="my-requests"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+  <script type="module" src="dashboard.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>لوحة التحكم – مهنتي</title>

@@ -78,12 +78,15 @@
   </div>
 
   <script src="app.js"></script>
-  <script>
+  <script type="module">
+    import { loginUser } from './api.js';
+
     function fillDemo(type) {
       document.getElementById('login-email').value = type === 'trainee' ? 'youcef@skillup.dz' : 'fatima@skillup.dz';
       document.getElementById('login-password').value = 'Demo@2025';
     }
-    document.getElementById('login-form').addEventListener('submit', function(e) {
+
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       const email = document.getElementById('login-email').value.trim();
       const pass  = document.getElementById('login-password').value.trim();
@@ -92,10 +95,15 @@
       errEl.style.display = 'none';
       const btn = document.getElementById('btn-login-submit');
       btn.textContent = '⏳ جارٍ التحقق...'; btn.disabled = true;
-      setTimeout(() => {
+      try {
+        const data = await loginUser(email, pass);
         btn.textContent = '✅ تم تسجيل الدخول'; btn.style.background = 'var(--success)';
-        setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
-      }, 1500);
+        // redirect to dashboard
+        setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+      } catch (err) {
+        errEl.textContent = err.detail || 'فشل تسجيل الدخول'; errEl.style.display = 'block';
+        btn.textContent = 'تسجيل الدخول'; btn.disabled = false;
+      }
     });
   </script>
 </body>

@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: skillup-web
+    env: docker
+    dockerfilePath: Dockerfile
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        value: $DATABASE_URL
+      - key: SECRET_KEY
+        value: $SECRET_KEY
+      - key: FIRST_SUPERUSER_EMAIL
+        value: $FIRST_SUPERUSER_EMAIL
+      - key: FIRST_SUPERUSER_PASSWORD
+        value: $FIRST_SUPERUSER_PASSWORD
