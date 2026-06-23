@@ -46,4 +46,33 @@ async function getCurrentUser() {
   return apiFetch('/users/me');
 }
 
-export { apiFetch, registerUser, loginUser, getCurrentUser };
+function getToken() {
+  // Check if HttpOnly cookie is set by checking if we can access user
+  // Since we're using HttpOnly cookies, we can't directly access the token
+  // Instead, check if user is authenticated by making a request
+  return localStorage.getItem('auth_token') || null;
+}
+
+function setToken(token) {
+  if (token) {
+    localStorage.setItem('auth_token', token);
+  } else {
+    localStorage.removeItem('auth_token');
+  }
+}
+
+function logout() {
+  setToken(null);
+  // Clear any other auth-related data
+  localStorage.removeItem('user_data');
+}
+
+export { 
+  apiFetch, 
+  registerUser, 
+  loginUser, 
+  getCurrentUser,
+  getToken,
+  setToken,
+  logout
+};
