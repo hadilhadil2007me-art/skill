@@ -224,6 +224,12 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   transition: var(--transition);
   flex-shrink: 0;
 }
+.logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  transition: var(--transition);
+}
 .navbar.scrolled .nav-logo { color: var(--navy); }
 .logo-icon { font-size: 1.8rem; }
 .nav-links {
