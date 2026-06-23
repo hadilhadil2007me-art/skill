@@ -1,6 +1,6 @@
 import enum
 import uuid
-from sqlalchemy import Column, String, DateTime, func
+from sqlalchemy import Boolean, Column, String, DateTime, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from app.models.base import Base
@@ -12,6 +12,12 @@ class UserRole(str, enum.Enum):
     TRAINEE = "trainee"
 
 
+class AccountStatus(str, enum.Enum):
+    PENDING = "pending"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+
+
 class User(Base):
     __tablename__ = "users"
 
@@ -21,6 +27,13 @@ class User(Base):
     password_hash = Column(String, nullable=False)
     role = Column(String, default=UserRole.TRAINEE.value, nullable=False)
     phone = Column(String, nullable=True)
+    wilaya = Column(String, nullable=True)
+    profession = Column(String, nullable=True)
+    account_status = Column(
+        String, default=AccountStatus.PENDING.value, nullable=False
+    )
+    is_verified = Column(Boolean, default=False, nullable=False)
+    verification_code = Column(String, nullable=True)
     created_at = Column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )

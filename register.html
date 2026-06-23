@@ -118,7 +118,7 @@
 
   <script src="app.js"></script>
   <script type="module">
-    import { registerUser, loginUser } from './api.js';
+    import { registerUser, verifyUser, loginUser } from './api.js';
     const ALGERIA_WILAYAS = [
       'أدرار', 'الشلف', 'الأغواط', 'أم البواقي', 'باتنة', 'بجاية', 'بسكرة', 'بشار',
       'البليدة', 'البويرة', 'تمنراست', 'تبسة', 'تلمسان', 'تيارت', 'تيزي وزو', 'الجزائر العاصمة',
@@ -146,6 +146,7 @@
       const lname = document.getElementById('reg-lname').value.trim();
       const phone = document.getElementById('reg-phone').value.trim();
       const wilaya = document.getElementById('reg-wilaya').value;
+      const profession = document.getElementById('reg-profession').value;
       const pass = document.getElementById('reg-password').value.trim();
       const email = document.getElementById('reg-email').value.trim() || `${phone}@skillup.local`;
       const role = document.querySelector('.type-btn.active')?.dataset.type === 'craftsman' ? 'trainer' : 'trainee';
@@ -164,11 +165,23 @@
       btn.disabled = true;
       try {
         const full_name = `${fname} ${lname}`;
-        await registerUser({ email, full_name, password: pass, role, phone });
-        // auto login
-        await loginUser(email, pass);
-        btn.textContent = '✅ تم الإنشاء وتسجيل الدخول'; btn.style.background = 'var(--success)';
-        window.location.replace('dashboard.html');
+        const result = await registerUser({ email, full_name, password: pass, role, phone, wilaya, profession });
+        if (result.verification_code) {
+          await verifyUser(email, result.verification_code);
+        }
+        if (result.user?.account_status === 'approved') {
+          await loginUser(email, pass);
+          btn.textContent = '✅ تم الإنشاء وتسجيل الدخول'; btn.style.background = 'var(--success)';
+          window.location.replace('dashboard.html');
+          return;
+        }
+        errEl.style.display = 'block';
+        errEl.style.color = '#166534';
+        errEl.style.borderColor = 'rgba(34,197,94,0.35)';
+        errEl.style.background = 'rgba(34,197,94,0.1)';
+        errEl.textContent = 'تم إنشاء الحساب وتأكيده. الحساب الآن في انتظار موافقة المدير قبل تسجيل الدخول.';
+        btn.textContent = 'في انتظار موافقة المدير';
+        btn.disabled = true;
       } catch (err) {
         errEl.textContent = err.detail || JSON.stringify(err);
         errEl.style.display = 'block';

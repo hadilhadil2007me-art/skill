@@ -4,7 +4,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.models.trainer_profile import TrainerProfile
-from app.models.user import User, UserRole
+from app.models.user import AccountStatus, User, UserRole
 from app.models.skill import Skill
 from app.schemas.trainer_profile import TrainerProfileCreate, TrainerProfileUpdate
 
@@ -33,7 +33,14 @@ def get_all_profiles(
     """
     Retrieve all trainer profiles, supporting filters for city and skill.
     """
-    query = db.query(TrainerProfile)
+    query = (
+        db.query(TrainerProfile)
+        .join(User, TrainerProfile.user_id == User.id)
+        .filter(
+            User.account_status == AccountStatus.APPROVED.value,
+            User.is_verified.is_(True),
+        )
+    )
     
     if skill_id is not None:
         query = query.filter(TrainerProfile.skill_id == skill_id)

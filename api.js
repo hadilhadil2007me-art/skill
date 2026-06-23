@@ -39,6 +39,10 @@ async function registerUser(user) {
   return apiFetch('/auth/register', { method: 'POST', body: JSON.stringify(user) });
 }
 
+async function verifyUser(email, code) {
+  return apiFetch('/auth/verify', { method: 'POST', body: JSON.stringify({ email, code }) });
+}
+
 async function loginUser(email, password) {
   // OAuth2 password form
   const form = new URLSearchParams();
@@ -90,6 +94,7 @@ function logout() {
 export { 
   apiFetch, 
   registerUser, 
+  verifyUser,
   loginUser, 
   getCurrentUser,
   getToken,

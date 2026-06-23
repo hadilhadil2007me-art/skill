@@ -1,4 +1,5 @@
 from typing import List
+from uuid import UUID
 from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer
 import jwt
@@ -7,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.database.session import get_db
-from app.models.user import User
+from app.models.user import AccountStatus, User
 from app.schemas.user import TokenData
 
 # OAuth2 for explicit Authorization header flows (still supported)
@@ -60,9 +61,19 @@ def get_current_user(
 
     token_data = _decode_token(access_token)
 
-    user = db.query(User).filter(User.id == token_data.id).first()
+    try:
+        user_id = UUID(str(token_data.id))
+    except ValueError:
+        user_id = None
+
+    user = db.query(User).filter(User.id == user_id).first() if user_id else None
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    if not user.is_verified or user.account_status != AccountStatus.APPROVED.value:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Your account is not active yet.",
+        )
     return user
 
 

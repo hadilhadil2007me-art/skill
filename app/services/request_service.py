@@ -4,7 +4,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.models.training_request import TrainingRequest, RequestStatus
-from app.models.user import User, UserRole
+from app.models.user import AccountStatus, User, UserRole
 from app.schemas.training_request import TrainingRequestCreate
 
 
@@ -60,10 +60,15 @@ def create_training_request(
 
     # 2. Trainer role check
     trainer = db.query(User).filter(User.id == request_in.trainer_id).first()
-    if not trainer or trainer.role != UserRole.TRAINER.value:
+    if (
+        not trainer
+        or trainer.role != UserRole.TRAINER.value
+        or not trainer.is_verified
+        or trainer.account_status != AccountStatus.APPROVED.value
+    ):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Trainer not found or user is not a trainer.",
+            detail="Trainer not found or not approved yet.",
         )
 
     # 3. Check for existing pending request to avoid duplicates

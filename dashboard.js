@@ -1,132 +1,302 @@
 import { apiFetch, getCurrentUser, getToken, setToken } from './api.js';
 
-async function init() {
-  // auth check
-  const navActions = document.getElementById('nav-actions');
-  if (!getToken()) {
-    navActions.innerHTML = `<a href="login.html" class="btn btn-ghost">تسجيل الدخول</a> <a href="register.html" class="btn btn-primary">انضم الآن</a>`;
-  } else {
-    navActions.innerHTML = `<button id="btn-logout" class="btn btn-ghost">تسجيل الخروج</button>`;
-    document.getElementById('btn-logout').addEventListener('click', () => { setToken(null); window.location.href = 'index.html'; });
-  }
+const roleLabels = {
+  admin: 'مدير',
+  trainer: 'حرفي',
+  trainee: 'متدرب',
+};
 
-  let user;
-  try {
-    user = await getCurrentUser();
-  } catch (err) {
-    // Not authenticated
-    document.getElementById('user-info').innerHTML = `<p>لم يتم تسجيل الدخول. <a href="login.html">تسجيل الدخول</a></p>`;
+const statusLabels = {
+  approved: 'مقبول',
+  pending: 'في الانتظار',
+  rejected: 'مرفوض',
+};
+
+function byId(id) {
+  return document.getElementById(id);
+}
+
+function escapeHtml(value = '') {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+function setNav() {
+  const navActions = byId('nav-actions');
+  if (!getToken()) {
+    navActions.innerHTML = `
+      <a href="login.html" class="btn btn-ghost">تسجيل الدخول</a>
+      <a href="register.html" class="btn btn-primary">إنشاء حساب</a>
+    `;
     return;
   }
+  navActions.innerHTML = '<button id="btn-logout" class="btn btn-ghost">تسجيل الخروج</button>';
+  byId('btn-logout').addEventListener('click', () => {
+    setToken(null);
+    window.location.href = 'index.html';
+  });
+}
 
-  document.getElementById('user-info').innerHTML = `
-    <strong>${user.full_name}</strong> — <small>${user.email}</small>
-    <div>الدور: ${user.role}</div>
+function showAuthMessage(message) {
+  byId('auth-message').style.display = 'block';
+  byId('auth-message').innerHTML = message;
+  byId('dashboard-content').style.display = 'none';
+}
+
+function renderUser(user) {
+  byId('page-title').textContent = `مرحبًا ${user.full_name}`;
+  byId('page-subtitle').textContent = `حساب ${roleLabels[user.role] || user.role} على منصة مهنتي.`;
+  byId('user-info').innerHTML = `
+    <div class="profile-line"><span>الاسم</span><span>${escapeHtml(user.full_name)}</span></div>
+    <div class="profile-line"><span>البريد</span><span>${escapeHtml(user.email)}</span></div>
+    <div class="profile-line"><span>الهاتف</span><span>${escapeHtml(user.phone || '-')}</span></div>
+    <div class="profile-line"><span>الولاية</span><span>${escapeHtml(user.wilaya || '-')}</span></div>
+    <div class="profile-line"><span>المهنة</span><span>${escapeHtml(user.profession || '-')}</span></div>
+    <div class="profile-line"><span>الدور</span><span>${roleLabels[user.role] || user.role}</span></div>
+    <div class="profile-line">
+      <span>الحالة</span>
+      <span><span class="badge ${user.account_status}">${statusLabels[user.account_status] || user.account_status}</span></span>
+    </div>
+    <div class="profile-line">
+      <span>التحقق</span>
+      <span>${user.is_verified ? 'مؤكد' : 'غير مؤكد'}</span>
+    </div>
   `;
+}
 
-  // role-specific UI
-  if (user.role === 'trainer') {
-    document.getElementById('trainer-section').style.display = 'block';
-    await loadSkills();
-    await loadTrainerProfile(user.id);
-    await loadRequests(user.id);
-  } else {
-    document.getElementById('trainee-section').style.display = 'block';
-    await loadTrainers();
-    await loadMyRequests(user.id);
-    document.getElementById('btn-search-trainers').addEventListener('click', () => loadTrainers(document.getElementById('search-trainer').value));
+function addTab(id, label, active = false) {
+  const tabs = byId('tabs');
+  const button = document.createElement('button');
+  button.className = `tab-btn${active ? ' active' : ''}`;
+  button.dataset.panel = id;
+  button.textContent = label;
+  tabs.appendChild(button);
+  byId(id).classList.toggle('active', active);
+  button.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach((tab) => tab.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach((panel) => panel.classList.remove('active'));
+    button.classList.add('active');
+    byId(id).classList.add('active');
+  });
+}
+
+async function loadAdminPanel() {
+  const el = byId('pending-users');
+  el.innerHTML = '<p class="empty">جاري تحميل الحسابات...</p>';
+  const users = await apiFetch('/users?account_status=pending');
+  if (!users.length) {
+    el.innerHTML = '<p class="empty">لا توجد حسابات في انتظار الموافقة.</p>';
+    return;
   }
+  el.innerHTML = users.map((user) => `
+    <div class="item">
+      <div class="item-head">
+        <div>
+          <div class="item-title">${escapeHtml(user.full_name)}</div>
+          <div class="item-meta">
+            ${escapeHtml(user.email)}<br />
+            ${roleLabels[user.role] || user.role} - ${escapeHtml(user.wilaya || '-')} - ${escapeHtml(user.profession || '-')}
+          </div>
+        </div>
+        <span class="badge pending">في الانتظار</span>
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-primary" data-user-id="${user.id}" data-status="approved">قبول</button>
+        <button class="btn btn-ghost" data-user-id="${user.id}" data-status="rejected">رفض</button>
+      </div>
+    </div>
+  `).join('');
+  el.querySelectorAll('button[data-user-id]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      button.disabled = true;
+      await apiFetch(`/users/${button.dataset.userId}/approval`, {
+        method: 'PATCH',
+        body: JSON.stringify({ account_status: button.dataset.status }),
+      });
+      await loadAdminPanel();
+    });
+  });
 }
 
 async function loadSkills() {
   const skills = await apiFetch('/skills');
-  const sel = document.getElementById('skill-select');
-  sel.innerHTML = skills.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
-  document.getElementById('trainer-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const payload = {
-      skill_id: parseInt(sel.value),
-      city: document.getElementById('trainer-city').value || 'غير محدد',
-      experience_years: parseInt(document.getElementById('trainer-exp').value) || 0,
-      bio: document.getElementById('trainer-bio').value || ''
-    };
-    try {
-      const res = await apiFetch('/trainers/me', { method: 'POST', body: JSON.stringify(payload) });
-      alert('تم حفظ ملف المدرب');
-      loadTrainerProfile(res.user_id || res.id);
-    } catch (err) { alert(err.detail || 'خطأ'); }
-  });
+  const sel = byId('skill-select');
+  sel.innerHTML = skills.map((skill) => `<option value="${skill.id}">${escapeHtml(skill.name)}</option>`).join('');
 }
 
-async function loadTrainerProfile(userId) {
+async function loadTrainerProfile() {
+  const el = byId('trainer-profile');
   try {
     const profile = await apiFetch('/trainers/me');
-    const container = document.getElementById('trainer-profile');
-    if (!profile) { container.innerHTML = '<p>لم تقم بإنشاء ملف بعد.</p>'; return; }
-    container.innerHTML = `
-      <div><strong>المدينة:</strong> ${profile.city}</div>
-      <div><strong>المهارة:</strong> ${profile.skill?.name || '—'}</div>
-      <div><strong>سنوات الخبرة:</strong> ${profile.experience_years}</div>
-      <div><strong>نبذة:</strong> ${profile.bio || '—'}</div>
+    el.innerHTML = `
+      <div class="notice" style="border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.1);color:#166534;">
+        ملفك ظاهر للمتدربين بعد اعتماد الحساب.
+      </div>
+      <div class="profile-line"><span>الولاية / المدينة</span><span>${escapeHtml(profile.city)}</span></div>
+      <div class="profile-line"><span>المهارة</span><span>${escapeHtml(profile.skill?.name || '-')}</span></div>
+      <div class="profile-line"><span>سنوات الخبرة</span><span>${profile.experience_years}</span></div>
+      <div class="profile-line"><span>نبذة</span><span>${escapeHtml(profile.bio || '-')}</span></div>
     `;
-  } catch (err) { console.error(err); }
+    byId('trainer-city').value = profile.city || '';
+    byId('trainer-exp').value = profile.experience_years || 0;
+    byId('trainer-bio').value = profile.bio || '';
+    if (profile.skill?.id) byId('skill-select').value = profile.skill.id;
+  } catch (err) {
+    el.innerHTML = '<div class="notice">لم تنشئ ملف الحرفي بعد. أكمل البيانات بالأسفل ليظهر ملفك بعد اعتماد الحساب.</div>';
+  }
 }
 
-async function loadRequests(trainerId) {
-  // trainer sees received requests via /requests
+async function saveTrainerProfile(event) {
+  event.preventDefault();
+  const payload = {
+    skill_id: Number(byId('skill-select').value),
+    city: byId('trainer-city').value.trim() || 'غير محدد',
+    experience_years: Number(byId('trainer-exp').value) || 0,
+    bio: byId('trainer-bio').value.trim(),
+  };
+  try {
+    await apiFetch('/trainers/me', { method: 'POST', body: JSON.stringify(payload) });
+  } catch (err) {
+    if (String(err.detail || '').includes('already exists')) {
+      await apiFetch('/trainers/me', { method: 'PUT', body: JSON.stringify(payload) });
+    } else {
+      alert(err.detail || 'تعذر حفظ ملف الحرفي');
+      return;
+    }
+  }
+  await loadTrainerProfile();
+}
+
+async function loadRequests() {
   const list = await apiFetch('/requests');
-  const el = document.getElementById('requests-list');
-  if (!list.length) { el.innerHTML = '<p>لا توجد طلبات واردة.</p>'; return; }
-  el.innerHTML = list.map(r => `
-    <div class="request-item card">
-      <div><strong>${r.trainee.full_name}</strong> — ${r.message || ''}</div>
-      <div>الحالة: ${r.status}</div>
-      <div style="margin-top:8px;"><button class="btn" data-id="${r.id}" data-action="accept">قبول</button> <button class="btn btn-ghost" data-id="${r.id}" data-action="reject">رفض</button></div>
+  const el = byId('requests-list');
+  if (!list.length) {
+    el.innerHTML = '<p class="empty">لا توجد طلبات واردة.</p>';
+    return;
+  }
+  el.innerHTML = list.map((request) => `
+    <div class="item">
+      <div class="item-head">
+        <div>
+          <div class="item-title">${escapeHtml(request.trainee.full_name)}</div>
+          <div class="item-meta">${escapeHtml(request.message || '')}</div>
+        </div>
+        <span class="badge ${request.status === 'pending' ? 'pending' : 'approved'}">${escapeHtml(request.status)}</span>
+      </div>
+      ${request.status === 'pending' ? `
+        <div class="item-actions">
+          <button class="btn btn-primary" data-id="${request.id}" data-status="accepted">قبول</button>
+          <button class="btn btn-ghost" data-id="${request.id}" data-status="rejected">رفض</button>
+        </div>` : ''}
     </div>
   `).join('');
-  el.querySelectorAll('button').forEach(b => {
-    b.addEventListener('click', async (e) => {
-      const id = e.target.dataset.id;
-      const action = e.target.dataset.action;
-      try {
-        const status = action === 'accept' ? 'accepted' : 'rejected';
-        await apiFetch(`/requests/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) });
-        alert('تم تحديث الحالة');
-        loadRequests();
-      } catch (err) { alert(err.detail || 'خطأ'); }
+  el.querySelectorAll('button[data-id]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      await apiFetch(`/requests/${button.dataset.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status: button.dataset.status }),
+      });
+      await loadRequests();
     });
   });
 }
 
 async function loadTrainers(query = '') {
   const trainers = await apiFetch('/trainers');
-  const filtered = trainers.filter(t => !query || (t.user.full_name + ' ' + (t.city||'')).toLowerCase().includes(query.toLowerCase()));
-  const el = document.getElementById('trainers-list');
-  if (!filtered.length) { el.innerHTML = '<p>لا يوجد مدربون.</p>'; return; }
-  el.innerHTML = filtered.map(t => `
-    <div class="trainer-card card">
-      <div><strong>${t.user.full_name}</strong></div>
-      <div>${t.skill?.name || ''} — ${t.city}</div>
-      <div style="margin-top:8px;"><button class="btn" data-id="${t.user.id}">أرسل طلب تدريب</button></div>
+  const text = query.trim().toLowerCase();
+  const filtered = trainers.filter((trainer) => {
+    const haystack = `${trainer.user.full_name} ${trainer.city || ''} ${trainer.skill?.name || ''}`.toLowerCase();
+    return !text || haystack.includes(text);
+  });
+  const el = byId('trainers-list');
+  if (!filtered.length) {
+    el.innerHTML = '<p class="empty">لا توجد نتائج مطابقة.</p>';
+    return;
+  }
+  el.innerHTML = filtered.map((trainer) => `
+    <div class="item">
+      <div class="item-head">
+        <div>
+          <div class="item-title">${escapeHtml(trainer.user.full_name)}</div>
+          <div class="item-meta">${escapeHtml(trainer.skill?.name || '-')} - ${escapeHtml(trainer.city || '-')}</div>
+        </div>
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-primary" data-id="${trainer.user.id}">إرسال طلب تدريب</button>
+      </div>
     </div>
   `).join('');
-  el.querySelectorAll('button').forEach(b => b.addEventListener('click', async (e) => {
-    const trainerId = e.target.dataset.id;
-    const message = prompt('اكتب رسالة قصيرة لتعريف نفسك');
-    if (!message) return;
-    try {
-      const res = await apiFetch('/requests', { method: 'POST', body: JSON.stringify({ trainer_id: trainerId, message }) });
-      alert('تم إرسال الطلب');
-      loadMyRequests();
-    } catch (err) { alert(err.detail || 'خطأ'); }
-  }));
+  el.querySelectorAll('button[data-id]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const message = prompt('اكتب رسالة قصيرة للحرفي');
+      if (!message) return;
+      await apiFetch('/requests', {
+        method: 'POST',
+        body: JSON.stringify({ trainer_id: button.dataset.id, message }),
+      });
+      await loadMyRequests();
+    });
+  });
 }
 
 async function loadMyRequests() {
   const list = await apiFetch('/requests');
-  const el = document.getElementById('my-requests');
-  if (!list.length) { el.innerHTML = '<p>لا توجد طلبات لديك.</p>'; return; }
-  el.innerHTML = list.map(r => `<div class="card"><div><strong>${r.trainer.full_name}</strong> — الحالة: ${r.status}</div></div>`).join('');
+  const el = byId('my-requests');
+  if (!list.length) {
+    el.innerHTML = '<p class="empty">لا توجد طلبات لديك.</p>';
+    return;
+  }
+  el.innerHTML = list.map((request) => `
+    <div class="item">
+      <div class="item-title">${escapeHtml(request.trainer.full_name)}</div>
+      <div class="item-meta">الحالة: ${escapeHtml(request.status)}</div>
+    </div>
+  `).join('');
+}
+
+async function init() {
+  setNav();
+  if (!getToken()) {
+    showAuthMessage('<p>لم يتم تسجيل الدخول. <a href="login.html">سجل الدخول</a> للوصول إلى لوحة التحكم.</p>');
+    return;
+  }
+
+  let user;
+  try {
+    user = await getCurrentUser();
+  } catch (err) {
+    setToken(null);
+    showAuthMessage(`<p>${escapeHtml(err.detail || 'انتهت الجلسة أو الحساب غير مفعل بعد.')} <a href="login.html">تسجيل الدخول</a></p>`);
+    return;
+  }
+
+  byId('dashboard-content').style.display = 'grid';
+  renderUser(user);
+
+  let firstTab = true;
+  if (user.role === 'admin') {
+    addTab('admin-panel', 'موافقة الحسابات', firstTab);
+    firstTab = false;
+    await loadAdminPanel();
+  }
+  if (user.role === 'trainer') {
+    addTab('trainer-panel', 'ملف الحرفي', firstTab);
+    firstTab = false;
+    await loadSkills();
+    await loadTrainerProfile();
+    await loadRequests();
+    byId('trainer-form').addEventListener('submit', saveTrainerProfile);
+  }
+  if (user.role === 'trainee') {
+    addTab('trainee-panel', 'فرص التدريب', firstTab);
+    await loadTrainers();
+    await loadMyRequests();
+    byId('btn-search-trainers').addEventListener('click', () => loadTrainers(byId('search-trainer').value));
+  }
 }
 
 init();

@@ -1,6 +1,7 @@
 import contextlib
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import inspect, text
 
 from app.core.config import settings
 from app.database.session import SessionLocal, engine
@@ -9,6 +10,29 @@ from app.models.user import UserRole
 from app.routes.api import api_router
 from app.schemas.user import UserCreate
 from app.services.user_service import get_user_by_email, create_user
+
+
+def ensure_user_columns():
+    """
+    Add new account-management columns for existing demo databases.
+    Alembic should be used for production migrations, but this keeps the
+    current one-command demo deployment from breaking on old SQLite files.
+    """
+    inspector = inspect(engine)
+    existing = {column["name"] for column in inspector.get_columns("users")}
+    dialect = engine.dialect.name
+    bool_default = "true" if dialect == "postgresql" else "1"
+    columns = {
+        "wilaya": "VARCHAR",
+        "profession": "VARCHAR",
+        "account_status": "VARCHAR DEFAULT 'approved' NOT NULL",
+        "is_verified": f"BOOLEAN DEFAULT {bool_default} NOT NULL",
+        "verification_code": "VARCHAR",
+    }
+    with engine.begin() as connection:
+        for name, ddl in columns.items():
+            if name not in existing:
+                connection.execute(text(f"ALTER TABLE users ADD COLUMN {name} {ddl}"))
 
 
 @contextlib.asynccontextmanager
@@ -20,6 +44,7 @@ async def lifespan(app: FastAPI):
     # 1. Automatically create database tables if they do not exist
     # (Acts as a fallback if Alembic is not executed first)
     Base.metadata.create_all(bind=engine)
+    ensure_user_columns()
     
     # 2. Seed default admin superuser
     db = SessionLocal()
@@ -37,6 +62,12 @@ async def lifespan(app: FastAPI):
                 )
                 create_user(db=db, user_in=user_in)
                 print(f"Successfully seeded superuser: {admin_email}")
+            else:
+                admin.account_status = "approved"
+                admin.is_verified = True
+                admin.verification_code = None
+                db.add(admin)
+                db.commit()
     except Exception as e:
         print(f"Error seeding initial superuser: {e}")
     finally:
