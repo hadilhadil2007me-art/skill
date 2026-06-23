@@ -92,8 +92,7 @@
       try {
         const data = await loginUser(email, pass);
         btn.textContent = '✅ تم تسجيل الدخول'; btn.style.background = 'var(--success)';
-        // redirect to dashboard
-        setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+        window.location.replace('dashboard.html');
       } catch (err) {
         errEl.textContent = err.detail || 'فشل تسجيل الدخول'; errEl.style.display = 'block';
         btn.textContent = 'تسجيل الدخول'; btn.disabled = false;

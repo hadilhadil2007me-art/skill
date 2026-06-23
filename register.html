@@ -168,7 +168,7 @@
         // auto login
         await loginUser(email, pass);
         btn.textContent = '✅ تم الإنشاء وتسجيل الدخول'; btn.style.background = 'var(--success)';
-        setTimeout(() => { window.location.href = 'dashboard.html'; }, 900);
+        window.location.replace('dashboard.html');
       } catch (err) {
         errEl.textContent = err.detail || JSON.stringify(err);
         errEl.style.display = 'block';
